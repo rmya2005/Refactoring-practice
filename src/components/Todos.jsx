@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
 import {addTodo, removeTodo} from "../features/todoSlice.js";
 
 function Todos() {
-    const todos = useSelector((state) => state.todos);
+    const todos = useSelector((state) => state.todo.todos);
+    const memoizedTodos = useMemo(() => todos, [todos]);
     const dispatch = useDispatch()
 
     return (
@@ -12,7 +13,7 @@ function Todos() {
             {todos.length === 0 ? (
                 <p className="text-gray-500 text-center">No todos yet. Add one above!</p>
             ) : (
-                todos.map((todo) => (
+                memoizedTodos.map((todo) => (
                     <div
                         className="border border-gray-200 rounded-lg p-3 mb-2 text-gray-800 flex justify-between items-center"
                         key={todo.id}
