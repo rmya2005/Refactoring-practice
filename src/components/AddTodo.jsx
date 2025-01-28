@@ -4,14 +4,23 @@ import {addTodo} from "../features/todoSlice.js";
 
 
 function AddTodo() {
-    const [input, setInput] = useState();
+    const [input, setInput] = useState('');
+    const [error, setError] = useState('');
     const dispatch = useDispatch();
 
     const addTodoHandler = (e) => {
         e.preventDefault();
-        if (!input?.trim()) return;
+        if (!input.trim()) {
+            setError('Todo cannot be empty');
+            return;
+        }
+        if (input.length > 100) {
+            setError('Todo is too long (max 100 characters)');
+            return;
+        }
         dispatch(addTodo(input.trim()));
         setInput('');
+        setError('');
     };
 
     return (
@@ -32,6 +41,7 @@ function AddTodo() {
             >
                 Add
             </button>
+            {error && <p style={{color: 'red'}}>{error}</p>}
         </form>
     );
 }
